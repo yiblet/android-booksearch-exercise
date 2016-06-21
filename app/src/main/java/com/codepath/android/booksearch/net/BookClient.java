@@ -27,4 +27,12 @@ public class BookClient {
             e.printStackTrace();
         }
     }
+
+    // Method for accessing the book API
+    public void getBook(final String key, JsonHttpResponseHandler handler) {
+
+        String bibkeys = "bibkeys=OLID:"+key;
+        client.get(API_BASE_URL+"api/books?"+bibkeys, handler);
+
+    }
 }

@@ -48,6 +48,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tvPublisher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tvPages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_marginTop="8dp" />
 
 </LinearLayout>

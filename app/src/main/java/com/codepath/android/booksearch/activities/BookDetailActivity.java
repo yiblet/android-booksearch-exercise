@@ -18,17 +18,28 @@ import android.widget.TextView;
 
 import com.codepath.android.booksearch.R;
 import com.codepath.android.booksearch.models.Book;
+import com.codepath.android.booksearch.net.BookClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class BookDetailActivity extends AppCompatActivity {
     private ImageView ivBookCover;
     private TextView tvTitle;
     private TextView tvAuthor;
+    private TextView tvPublisher;
+    private TextView tvPages;
 
     private ShareActionProvider miShareAction;
     private Intent shareIntent;
@@ -41,6 +52,8 @@ public class BookDetailActivity extends AppCompatActivity {
         ivBookCover = (ImageView) findViewById(R.id.ivBookCover);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
+        tvPublisher = (TextView) findViewById(R.id.tvPublisher);
+        tvPages = (TextView) findViewById(R.id.tvPages);
 
         // Extract book object from intent extras
         Book book = getIntent().getParcelableExtra("book");
@@ -63,6 +76,8 @@ public class BookDetailActivity extends AppCompatActivity {
 
         tvTitle.setText(book.getTitle());
         tvAuthor.setText(book.getAuthor());
+
+        fetchBook(book.getOpenLibraryId());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -147,5 +162,36 @@ public class BookDetailActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Executes an API call to the OpenLibrary search endpoint, parses the results
+    // Converts them into an array of book objects and adds them to the adapter
+    private void fetchBook(final String query) {
+        BookClient client = new BookClient();
+        client.getBook(query, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+
+                    if(response != null) {
+                        JSONObject bookObj = response.getJSONObject("OLID:" + query);
+                        JSONArray publishers = bookObj.getJSONArray("publishers");
+                        int numPages = bookObj.getInt("number_of_pages");
+                        tvPublisher.setText(publishers.getString(0));
+                        tvPages.setText(numPages);
+                    }
+
+                } catch (JSONException e) {
+                    // Invalid JSON format, show appropriate error.
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
+
     }
 }
