@@ -3,6 +3,7 @@ package com.codepath.android.booksearch.activities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -35,6 +36,14 @@ public class BookDetailActivity extends AppCompatActivity {
 
         tvTitle.setText(book.getTitle());
         tvAuthor.setText(book.getAuthor());
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView tvToolbarTitle = (TextView) findViewById(R.id.tvToolbarTitle);
+        tvToolbarTitle.setText(book.getTitle());
+
     }
 
 

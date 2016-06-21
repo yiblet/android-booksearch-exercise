@@ -41,6 +41,7 @@ public class BookListActivity extends AppCompatActivity {
         final ArrayList<Book> aBooks = new ArrayList<>();
         // initialize the adapter
         bookAdapter = new BookAdapter(this, aBooks);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // attach the adapter to the ListView
         lvBooks.setAdapter(bookAdapter);
